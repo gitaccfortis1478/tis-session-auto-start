@@ -1,0 +1,3 @@
+log_files/*
+upcoming_schedules/*
+__pycache__/
