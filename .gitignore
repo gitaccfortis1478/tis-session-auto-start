@@ -1,3 +1,4 @@
 log_files/*
 upcoming_schedules/*
 __pycache__/
+*.tmp.log

@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from chrome_window_closer import close_chrome_for_profile
 import constant_details
 from constant_details import CSSClassName
-from utilities import log_details
+from utilities import log_details, start_logging, complete_logging
 
 
 SELENIUM_PROFILE = constant_details.SELENIUM_PROFILE
@@ -408,6 +408,8 @@ def start_upcoming_session(driver: WebDriver, wait: WebDriverWait, upcoming_card
 
 
 def main():
+    start_logging()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument(SESSION_STARTER_ARGUMENT_NAME, type=int, required=False)
     
@@ -421,28 +423,38 @@ def main():
     try:
         today = datetime.now()
         
+        schedule_dir = constant_details.BASE_DIR / "upcoming_schedules"
+        schedule_dir.mkdir(parents=True, exist_ok=True)
+    
         schedule_with_messages_filename = f"message-for-{today:%Y-%m-%d}.csv"
-
-        df = pd.read_csv(schedule_with_messages_filename)
-        
+        schedule_with_messages_path = schedule_dir / schedule_with_messages_filename
+    
+        df = pd.read_csv(schedule_with_messages_path)
+    
         matches = df[df["ID"] == send_details_for_session_id]
-
+        
         session_to_send_details_of_while_ending = matches.iloc[0] if not matches.empty else None
         
-        if session_to_send_details_of_while_ending:
+        if session_to_send_details_of_while_ending is not None:
             prev_session_what_was_covered = session_to_send_details_of_while_ending["What Was Covered"]
             prev_session_to_do_before_next_session = session_to_send_details_of_while_ending["To Do Before Next Session"]
-        
-            if len(prev_session_what_was_covered) > 200:
+            
+            prev_session_what_was_covered = None if pd.isna(prev_session_what_was_covered) else prev_session_what_was_covered
+            prev_session_to_do_before_next_session = None if pd.isna(prev_session_to_do_before_next_session) else prev_session_to_do_before_next_session
+    
+            if ((prev_session_what_was_covered is not None) and (len(prev_session_what_was_covered) > 200)):
                 log_details("\n[bold red]What Was Covered text length exceeds 200 characters. Dropping...[/bold red]")
                 prev_session_what_was_covered = None
-            
-            if len(prev_session_to_do_before_next_session) > 200:
+    
+            if ((prev_session_to_do_before_next_session is not None) and (len(prev_session_to_do_before_next_session) > 200)):
                 log_details("\n[bold red]To Do Before Next Session text length exceeds 200 characters. Dropping...[/bold red]")
                 prev_session_to_do_before_next_session = None
-            
+    
     except Exception as e:
         log_details(f"Some exception occurred while reading {schedule_with_messages_filename}: {e}")
+    
+    log_details(f"{prev_session_what_was_covered = }")
+    log_details(f"{prev_session_to_do_before_next_session = }")
     
     driver = create_driver()
     wait = WebDriverWait(driver, 30)
@@ -550,6 +562,7 @@ def main():
 
             driver.quit()
 
+        complete_logging()
 
 if __name__ == "__main__":
     main()

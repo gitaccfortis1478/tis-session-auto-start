@@ -10,12 +10,9 @@ SELENIUM_PROFILE = r"C:\Users\thein\TIS Mentor Additional Chrome Profile\seleniu
 
 SESSION_LOAD_TIMEOUT = 10
 
-
 UPCOMING_SCHEDULES_DIR = "upcoming_schedules"
 
-PYTHON_EXE = Path(
-    r"C:\Users\thein\AppData\Local\Programs\Python\Python313\python.exe"
-)
+PYTHON_EXE = Path(r"C:\Users\thein\AppData\Local\Programs\Python\Python313\python.exe")
 
 TODAYS_SCHEDULE_SCRIPT = BASE_DIR / "todays_schedule.py"
 

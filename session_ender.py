@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from chrome_window_closer import close_chrome_for_profile
 import constant_details
 from constant_details import CSSClassName
-from utilities import log_details
+from utilities import log_details, start_logging, complete_logging
 
 
 SELENIUM_PROFILE = constant_details.SELENIUM_PROFILE
@@ -283,6 +283,8 @@ def end_session(driver: WebDriver, wait: WebDriverWait, session_card: WebElement
 
 
 def main():
+    start_logging()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument(SESSION_ENDER_ARGUMENT_NAME, type=int, required=False)
     
@@ -296,7 +298,7 @@ def main():
     try:
         today = datetime.now()
         
-        schedule_dir = Path(__file__).parent / "upcoming_schedules"
+        schedule_dir = constant_details.BASE_DIR / "upcoming_schedules"
         schedule_dir.mkdir(parents=True, exist_ok=True)
     
         schedule_with_messages_filename = f"message-for-{today:%Y-%m-%d}.csv"
@@ -400,6 +402,8 @@ def main():
             )
 
             driver.quit()
+            
+        complete_logging()
 
 
 if __name__ == "__main__":
