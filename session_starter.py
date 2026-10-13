@@ -171,9 +171,9 @@ def resume_session(driver: WebDriver, session_card: WebElement):
         "[bold yellow]Browser will remain open for the user.[/bold yellow]"
     )
 
-    input(
-        "\nPress Enter when you are finished with the session..."
-    )
+    # input(
+    #     "\nPress Enter when you are finished with the session..."
+    # )
 
 
 def end_session(driver: WebDriver, wait: WebDriverWait, session_card: WebElement, what_was_covered: str | None = None, to_do_before_next_session: str | None = None):
@@ -552,7 +552,7 @@ def main():
                 "\n[bold yellow]Browser left open.[/bold yellow]"
             )
 
-            input("Press enter to close")
+            # input("Press enter to close")
 
         else:
 
