@@ -394,6 +394,8 @@ def main():
             else:
                 log_details("[dim]Closing browser...[/dim]")
                 driver.quit()
+        except Exception as e:
+            log_details(f"Exception occurred: {e}")
         finally:
             complete_logging()
 
