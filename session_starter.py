@@ -543,26 +543,17 @@ def main():
         raise e
 
     finally:
+        try:
+            if keep_browser_open:
+                log_details(
+                    "\n[bold yellow]Browser left open.[/bold yellow]"
+                )
+            else:
+                log_details("[dim]Closing browser...[/dim]")
+                driver.quit()
+        finally:
+            complete_logging()
 
-        pass
-
-        if keep_browser_open:
-
-            log_details(
-                "\n[bold yellow]Browser left open.[/bold yellow]"
-            )
-
-            # input("Press enter to close")
-
-        else:
-
-            log_details(
-                "[dim]Closing browser...[/dim]"
-            )
-
-            driver.quit()
-
-        complete_logging()
 
 if __name__ == "__main__":
     main()

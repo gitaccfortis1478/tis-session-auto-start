@@ -39,15 +39,13 @@ def complete_logging():
     TEMP_LOG_FILE_PATH = BASE_DIR / TEMP_LOG_FILE
     FINAL_LOG_FILE_PATH = LOG_FILES_DIR / FINAL_LOG_FILE
     
+    log_details(f"Removing {TEMP_LOG_FILE_PATH}")
+    
     with TEMP_LOG_FILE_PATH.open("r") as temp_file, \
         FINAL_LOG_FILE_PATH.open("a") as final_file:
         shutil.copyfileobj(temp_file, final_file)
         
-    log_details(f"Removing {TEMP_LOG_FILE_PATH}")
-
     TEMP_LOG_FILE_PATH.unlink()
-    
-    log_details(f"Removed {TEMP_LOG_FILE_PATH}")
     
 
 def empty_directory(path: Path):

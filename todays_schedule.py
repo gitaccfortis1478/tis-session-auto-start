@@ -18,7 +18,7 @@ from chrome_window_closer import close_chrome_for_profile
 import constant_details
 
 from constant_details import CSSClassName
-from utilities import log_details, empty_directory
+from utilities import log_details, empty_directory, start_logging, complete_logging
 
 
 SELENIUM_PROFILE = constant_details.SELENIUM_PROFILE
@@ -146,6 +146,8 @@ def find_element_with_fallback(card: WebElement, primary_selector: str, fallback
 
 
 def main():
+    start_logging()
+    
     driver = create_driver()
     wait = WebDriverWait(driver, 30)
     
@@ -302,22 +304,16 @@ def main():
         raise e
 
     finally:
-
-        pass
-
-        # if keep_browser_open:
-
-        #     log_details(
-        #         "\n[bold yellow]Browser left open.[/bold yellow]"
-        #     )
-
-        # else:
-
-        #     log_details(
-        #         "[dim]Closing browser...[/dim]"
-        #     )
-
-        #     driver.quit()
+        try:
+            if keep_browser_open:
+                log_details(
+                    "\n[bold yellow]Browser left open.[/bold yellow]"
+                )
+            else:
+                log_details("[dim]Closing browser...[/dim]")
+                driver.quit()
+        finally:
+            complete_logging()
 
 
 if __name__ == "__main__":

@@ -656,9 +656,9 @@ def main():
         if i + 1 < len(sessions):
 
             upcoming_session = sessions[i + 1]
-            upcoming_session_end_time = upcoming_session["end_time"]
+            upcoming_session_start_time = upcoming_session["start_time"]
             
-            time_difference = (upcoming_session_end_time - session_start_time)
+            time_difference = (upcoming_session_start_time - session_end_time)
 
             # Assign a task to end the session if the next session starts more than 15 mins after the current one
             
