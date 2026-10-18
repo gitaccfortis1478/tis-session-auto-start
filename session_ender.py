@@ -295,6 +295,8 @@ def main():
     what_was_covered = None
     to_do_before_next_session = None
     
+    session_to_send_details_of_while_ending = None
+    
     try:
         today = datetime.now()
         

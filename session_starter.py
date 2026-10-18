@@ -420,6 +420,8 @@ def main():
     prev_session_what_was_covered = None
     prev_session_to_do_before_next_session = None
     
+    session_to_send_details_of_while_ending = None
+    
     try:
         today = datetime.now()
         
