@@ -149,7 +149,7 @@ def get_today_csv() -> Path:
 
     today = datetime.now().strftime("%Y-%m-%d")
 
-    csv_path = BASE_DIR / UPCOMING_SCHEDULES_DIR / f"{today}.csv"
+    csv_path = UPCOMING_SCHEDULES_DIR / f"{today}.csv"
 
     if not csv_path.exists():
         raise FileNotFoundError(

@@ -10,9 +10,9 @@ SELENIUM_PROFILE = r"C:\Users\thein\TIS Mentor Additional Chrome Profile\seleniu
 
 SESSION_LOAD_TIMEOUT = 10
 
-UPCOMING_SCHEDULES_DIR = "upcoming_schedules"
-
 PYTHON_EXE = Path(r"C:\Users\thein\AppData\Local\Programs\Python\Python313\python.exe")
+
+UPCOMING_SCHEDULES_DIR = BASE_DIR / "upcoming_schedules"
 
 TODAYS_SCHEDULE_SCRIPT = BASE_DIR / "todays_schedule.py"
 
@@ -21,6 +21,8 @@ SESSION_STARTER_SCRIPT = BASE_DIR / "session_starter.py"
 SESSION_ENDER_SCRIPT = BASE_DIR / "session_ender.py"
 
 LOG_FILES_DIR = BASE_DIR / "log_files"
+
+TEMP_LOG_FILES_DIR = BASE_DIR / "tmp_log_files"
 
 SESSION_STARTER_ARGUMENT_NAME = "--prev-session-id-for-message"
 
