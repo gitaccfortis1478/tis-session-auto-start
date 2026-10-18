@@ -28,24 +28,31 @@ def start_logging():
     
 
 def complete_logging():
-    
-    time = datetime.now()
-
-    LOG_FILES_DIR.mkdir(parents=True, exist_ok=True)
-
-    TEMP_LOG_FILE = Path(f"{time.strftime("%Y-%m-%d")}.tmp.log")
-    FINAL_LOG_FILE = Path(f"{time.strftime("%Y-%m-%d")}.log")
-
-    TEMP_LOG_FILE_PATH = BASE_DIR / TEMP_LOG_FILE
-    FINAL_LOG_FILE_PATH = LOG_FILES_DIR / FINAL_LOG_FILE
-    
-    log_details(f"Removing {TEMP_LOG_FILE_PATH}")
-    
-    with TEMP_LOG_FILE_PATH.open("r") as temp_file, \
-        FINAL_LOG_FILE_PATH.open("a") as final_file:
-        shutil.copyfileobj(temp_file, final_file)
+    try:
         
-    TEMP_LOG_FILE_PATH.unlink()
+        time = datetime.now()
+
+        LOG_FILES_DIR.mkdir(parents=True, exist_ok=True)
+
+        TEMP_LOG_FILE = Path(f"{time.strftime("%Y-%m-%d")}.tmp.log")
+        FINAL_LOG_FILE = Path(f"{time.strftime("%Y-%m-%d")}.log")
+
+        TEMP_LOG_FILE_PATH = BASE_DIR / TEMP_LOG_FILE
+        FINAL_LOG_FILE_PATH = LOG_FILES_DIR / FINAL_LOG_FILE
+        
+        log_details(f"Removing {TEMP_LOG_FILE_PATH}")
+        
+        with TEMP_LOG_FILE_PATH.open("rb") as temp_file, \
+            FINAL_LOG_FILE_PATH.open("ab") as final_file:
+            shutil.copyfileobj(temp_file, final_file)
+            
+        TEMP_LOG_FILE_PATH.unlink()
+
+    except Exception as e:
+        log_details(
+            f"Some exception occurred while copying tmp.log file to log file: "
+            f"{type(e).__name__}: {e}"
+        )
     
 
 def empty_directory(path: Path):
