@@ -473,6 +473,7 @@ def main():
         
         if not startable_session_exists(driver, wait, upcoming_cards):
             driver.quit()
+            complete_logging()
             return
         
         # ----------------------------------------------------
