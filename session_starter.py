@@ -403,8 +403,6 @@ def start_upcoming_session(driver: WebDriver, wait: WebDriverWait, upcoming_card
 def run_session_starter() -> bool:
     success = False
     
-    start_logging()
-    
     parser = argparse.ArgumentParser()
     parser.add_argument(SESSION_STARTER_ARGUMENT_NAME, type=int, required=False)
     
@@ -558,6 +556,7 @@ def run_session_starter() -> bool:
 
 
 def main():
+    start_logging()
 
     MAX_RETRIES = 3
     RETRY_DELAY_SECONDS = 5
@@ -602,6 +601,8 @@ def main():
                     "[bold red]All 3 attempts failed. "
                     "Please check the error above.[/bold red]"
                 )
+                
+                complete_logging()
 
                 input("\nPress Enter to close this terminal...")
 

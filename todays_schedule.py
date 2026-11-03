@@ -147,9 +147,7 @@ def find_element_with_fallback(card: WebElement, primary_selector: str, fallback
 
 def run_schedule_generator() -> bool:
     success = False
-    
-    start_logging()
-    
+        
     driver = create_driver()
     wait = WebDriverWait(driver, 30)
     
@@ -321,6 +319,7 @@ def run_schedule_generator() -> bool:
 
 
 def main():
+    start_logging()
 
     MAX_RETRIES = 3
     RETRY_DELAY_SECONDS = 5
@@ -365,6 +364,8 @@ def main():
                     "[bold red]All 3 attempts failed. "
                     "Please check the error above.[/bold red]"
                 )
+                
+                complete_logging()
 
                 input("\nPress Enter to close this terminal...")
 
