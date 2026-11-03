@@ -145,7 +145,9 @@ def find_element_with_fallback(card: WebElement, primary_selector: str, fallback
         return card.find_element(By.CSS_SELECTOR, fallback_selector)
 
 
-def main():
+def run_schedule_generator() -> bool:
+    success = False
+    
     start_logging()
     
     driver = create_driver()
@@ -290,7 +292,8 @@ def main():
 
         log_details(schedule_df)
         log_details(f"\nSaved schedule to: {schedule_path}")
-
+        
+        success = True
 
     except Exception as e:
 
@@ -300,8 +303,6 @@ def main():
 
         # Keep Chrome open so you can inspect what happened.
         keep_browser_open = True
-
-        raise e
 
     finally:
         try:
@@ -316,6 +317,58 @@ def main():
             log_details(f"Exception occurred: {e}")
         finally:
             complete_logging()
+            return success
+
+
+def main():
+
+    MAX_RETRIES = 3
+    RETRY_DELAY_SECONDS = 5
+
+    for attempt in range(1, MAX_RETRIES + 1):
+
+        log_details(
+            f"\n[bold cyan]Attempt {attempt}/{MAX_RETRIES}[/bold cyan]"
+        )
+
+        try:
+            if run_schedule_generator() is False:
+                raise Exception("Schedule generator failed")
+
+            log_details(
+                "[bold green]Schedule generator executed successfully.[/bold green]"
+            )
+
+            break
+
+        except Exception as error:
+
+            log_details(
+                f"\n[bold red]Attempt {attempt} failed:[/bold red]"
+            )
+
+            log_details(
+                f"[red]{type(error).__name__}: {error}[/red]"
+            )
+
+            if attempt < MAX_RETRIES:
+
+                log_details(
+                    f"[yellow]Retrying in {RETRY_DELAY_SECONDS} seconds...[/yellow]"
+                )
+
+                time.sleep(RETRY_DELAY_SECONDS)
+
+            else:
+
+                log_details(
+                    "[bold red]All 3 attempts failed. "
+                    "Please check the error above.[/bold red]"
+                )
+
+                input("\nPress Enter to close this terminal...")
+
+    complete_logging()
 
 
 if __name__ == "__main__":

@@ -275,7 +275,9 @@ def end_session(driver: WebDriver, wait: WebDriverWait, session_card: WebElement
 
 
 
-def main():
+def run_session_ender() -> bool:
+    success = False
+    
     start_logging()
     
     parser = argparse.ArgumentParser()
@@ -366,8 +368,8 @@ def main():
                 what_was_covered=what_was_covered,
                 to_do_before_next_session=to_do_before_next_session
             )
-
-            # keep_browser_open = True
+            
+        success = True
 
     except Exception as e:
 
@@ -377,8 +379,6 @@ def main():
 
         # Keep Chrome open so you can inspect what happened.
         keep_browser_open = True
-
-        raise e
 
     finally:
         try:
@@ -393,6 +393,59 @@ def main():
             log_details(f"Exception occurred: {e}")
         finally:
             complete_logging()
+            return success
+
+
+
+def main():
+
+    MAX_RETRIES = 3
+    RETRY_DELAY_SECONDS = 5
+
+    for attempt in range(1, MAX_RETRIES + 1):
+
+        log_details(
+            f"\n[bold cyan]Attempt {attempt}/{MAX_RETRIES}[/bold cyan]"
+        )
+
+        try:
+            if run_session_ender() is False:
+                raise Exception("Session ender failed")
+
+            log_details(
+                "[bold green]Session ender executed successfully.[/bold green]"
+            )
+
+            break
+
+        except Exception as error:
+
+            log_details(
+                f"\n[bold red]Attempt {attempt} failed:[/bold red]"
+            )
+
+            log_details(
+                f"[red]{type(error).__name__}: {error}[/red]"
+            )
+
+            if attempt < MAX_RETRIES:
+
+                log_details(
+                    f"[yellow]Retrying in {RETRY_DELAY_SECONDS} seconds...[/yellow]"
+                )
+
+                time.sleep(RETRY_DELAY_SECONDS)
+
+            else:
+
+                log_details(
+                    "[bold red]All 3 attempts failed. "
+                    "Please check the error above.[/bold red]"
+                )
+
+                input("\nPress Enter to close this terminal...")
+
+    complete_logging()
 
 
 if __name__ == "__main__":
