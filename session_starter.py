@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from chrome_window_closer import close_chrome_for_profile
 import constant_details
-from constant_details import CSSClassName
+from constant_details import CSSClassName, CHAR_LIMIT
 from utilities import log_details, start_logging, complete_logging
 
 
@@ -437,12 +437,12 @@ def run_session_starter() -> bool:
             prev_session_what_was_covered = None if pd.isna(prev_session_what_was_covered) else prev_session_what_was_covered
             prev_session_to_do_before_next_session = None if pd.isna(prev_session_to_do_before_next_session) else prev_session_to_do_before_next_session
     
-            if ((prev_session_what_was_covered is not None) and (len(prev_session_what_was_covered) > 200)):
-                log_details("\n[bold red]What Was Covered text length exceeds 200 characters. Dropping...[/bold red]")
+            if ((prev_session_what_was_covered is not None) and (len(prev_session_what_was_covered) > CHAR_LIMIT)):
+                log_details(f"\n[bold red]What Was Covered text length exceeds {CHAR_LIMIT} characters. Dropping...[/bold red]")
                 prev_session_what_was_covered = None
     
-            if ((prev_session_to_do_before_next_session is not None) and (len(prev_session_to_do_before_next_session) > 200)):
-                log_details("\n[bold red]To Do Before Next Session text length exceeds 200 characters. Dropping...[/bold red]")
+            if ((prev_session_to_do_before_next_session is not None) and (len(prev_session_to_do_before_next_session) > CHAR_LIMIT)):
+                log_details(f"\n[bold red]To Do Before Next Session text length exceeds {CHAR_LIMIT} characters. Dropping...[/bold red]")
                 prev_session_to_do_before_next_session = None
     
     except Exception as e:
