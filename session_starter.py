@@ -267,6 +267,8 @@ def end_session(driver: WebDriver, wait: WebDriverWait, session_card: WebElement
         )
 
         submit_button.click()
+        
+        time.sleep(5)
 
     log_details(
         "[green]Session ended successfully.[/green]"
