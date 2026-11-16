@@ -30,6 +30,8 @@ SESSION_ENDER_ARGUMENT_NAME = "--session-id-for-message"
 
 CHAR_LIMIT = 300
 
+WEB_DRIVER_WAIT_SECONDS = 15
+
 class CSSClassName(str, Enum):
     SESSION_CARD_CONTAINER = ".session-card-container"
     SESSION_CARD_DATE_BLOCK = ".session-card-date-block"

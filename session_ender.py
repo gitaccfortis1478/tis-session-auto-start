@@ -348,7 +348,7 @@ def run_session_ender() -> bool:
     log_details(f"{to_do_before_next_session = }")
  
     driver = create_driver()
-    wait = WebDriverWait(driver, 15)
+    wait = WebDriverWait(driver, constant_details.WEB_DRIVER_WAIT_SECONDS)
     
     # This controls whether finally() closes Chrome.
     keep_browser_open = False
