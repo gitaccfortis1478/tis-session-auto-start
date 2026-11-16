@@ -1,8 +1,6 @@
 """
 daily_scheduler.py
 
-Runs once per day (e.g. at Windows logon) and:
-
 1. Runs todays_schedule.py to generate today's CSV.
 2. Reads today's CSV.
 3. Creates one Windows Task Scheduler task per session.
@@ -33,6 +31,20 @@ import time
 import constant_details
 from utilities import empty_directory, log_details, start_logging, complete_logging
 
+
+import linecache
+import sys
+
+
+def trace_lines(frame, event, arg):
+  if event == "line" and frame.f_code.co_filename == __file__:
+    lineno = frame.f_lineno
+    line = linecache.getline(__file__, lineno).rstrip()
+    print(f"[Line {lineno}] {line}")
+  return trace_lines
+
+
+sys.settrace(trace_lines)
 
 # ============================================================
 # CONFIGURATION

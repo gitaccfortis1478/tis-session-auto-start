@@ -19,6 +19,22 @@ from constant_details import CSSClassName, CHAR_LIMIT
 from utilities import log_details, start_logging, complete_logging
 
 
+import linecache
+import sys
+
+
+def trace_lines(frame, event, arg):
+  if event == "line" and frame.f_code.co_filename == __file__:
+    lineno = frame.f_lineno
+    line = linecache.getline(__file__, lineno).rstrip()
+    print(f"[Line {lineno}] {line}")
+  return trace_lines
+
+
+sys.settrace(trace_lines)
+
+
+
 SELENIUM_PROFILE = constant_details.SELENIUM_PROFILE
 
 SESSIONS_URL = constant_details.SESSIONS_URL
@@ -194,12 +210,15 @@ def end_session(driver: WebDriver, wait: WebDriverWait, session_card: WebElement
 
     resume_button.click()
 
-    research_chips = driver.find_elements(
-        By.XPATH,
-        "//span[contains(@class, 'conduct-chip') and contains(normalize-space(.), 'Research')]"
+    chips_elements = wait.until(
+        lambda d: d.find_elements(By.CSS_SELECTOR, "[class*='conduct-chip']")
     )
+    
+    driver.find_elements(By.CSS_SELECTOR, "[class*='conduct-chip']")
+    
+    is_research = any("Research" in element.text for element in chips_elements)
 
-    if research_chips:
+    if is_research:
         proceed_button = wait.until(
             EC.element_to_be_clickable(
                 (By.XPATH, "//button[starts-with(normalize-space(.), 'Proceed')]")
@@ -329,7 +348,7 @@ def run_session_ender() -> bool:
     log_details(f"{to_do_before_next_session = }")
  
     driver = create_driver()
-    wait = WebDriverWait(driver, 30)
+    wait = WebDriverWait(driver, 15)
     
     # This controls whether finally() closes Chrome.
     keep_browser_open = False

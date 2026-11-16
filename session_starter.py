@@ -18,6 +18,22 @@ from constant_details import CSSClassName, CHAR_LIMIT
 from utilities import log_details, start_logging, complete_logging
 
 
+import linecache
+import sys
+
+
+def trace_lines(frame, event, arg):
+  if event == "line" and frame.f_code.co_filename == __file__:
+    lineno = frame.f_lineno
+    line = linecache.getline(__file__, lineno).rstrip()
+    print(f"[Line {lineno}] {line}")
+  return trace_lines
+
+
+sys.settrace(trace_lines)
+
+
+
 SELENIUM_PROFILE = constant_details.SELENIUM_PROFILE
 
 SESSIONS_URL = constant_details.SESSIONS_URL
@@ -454,7 +470,7 @@ def run_session_starter() -> bool:
     log_details(f"{prev_session_to_do_before_next_session = }")
     
     driver = create_driver()
-    wait = WebDriverWait(driver, 30)
+    wait = WebDriverWait(driver, 15)
     
     # This controls whether finally() closes Chrome.
     keep_browser_open = False

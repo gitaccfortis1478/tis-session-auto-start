@@ -149,7 +149,7 @@ def run_schedule_generator() -> bool:
     success = False
         
     driver = create_driver()
-    wait = WebDriverWait(driver, 30)
+    wait = WebDriverWait(driver, 15)
     
     # This controls whether finally() closes Chrome.
     keep_browser_open = False
